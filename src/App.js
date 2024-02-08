@@ -1,25 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
+import Selecionados from "./Components/Selecionados";
 
 function App() {
-  //               0 1 2 3 4 5 6 7 8 posição do array
-  let numeros = [1,2,3,4,5,6,7,8,9];
+  const[ingredientes, setIngredientes] = useState([]);
 
-  function clicou() {
-    numeros = numeros.map((elemento) => {
-      return elemento * 2;
-    });
+  function handleInputChange(e) {
+    const value = e.target.value;
 
-    console.log(numeros)
-    // numeros.forEach((elemento, index) => {
-    //   console.log(elemento + '-' + index)
-    // });
+    const newIngredientes = [...ingredientes];
+    const index = ingredientes.indexOf(value);
+
+    if(index === -1) newIngredientes.push(value);
+    else newIngredientes.splice(index, 1);
+
+    setIngredientes(newIngredientes);
   }
 
   return (
     <div>
-      <h1>Hello world</h1>
-      <h1>{numeros}</h1>      
-      <button onClick={() => {clicou(false)}} >Clique aqui</button>
+      <h1>ingredientes</h1>
+
+      <input
+        id="Pepperoni"
+        type="checkbox"
+        value="Pepperoni"
+        onChange={handleInputChange}
+      />
+      <label htmlFor="Pepperoni">Pepperoni</label>
+      <br />
+      <input
+        id="Queijo"
+        type="checkbox"
+        value="Queijo"
+        onChange={handleInputChange}
+      />
+      <label htmlFor="Queijo">Queijo</label>
+      <br />
+      <input
+        id="Molho"
+        type="checkbox"
+        value="Molho"
+        onChange={handleInputChange}
+      />
+      <label htmlFor="Molho">Molho</label>
+      <br />
+      <input
+        id="Tomate"
+        type="checkbox"
+        value="Tomate"
+        onChange={handleInputChange}
+      />
+      <label htmlFor="Tomate">Tomate</label>
+      <br />
+      <Selecionados selecionados={ingredientes} />
     </div>
   );
 }
