@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Note from "../../components/Note/Note";
 import "./Home.css"
+import NoteModal from "../../components/NoteModal";
+import { Modal } from "@mui/material";
 
-const notes = [
+const _notes = [
     {
         id: 1,
         title: "Note one",
@@ -51,12 +53,40 @@ const notes = [
 ];
 
 function Home() {
+    const [viewNote, setViewNote] = useState();
+    const [notes, setNotes] = useState(_notes);
+
+    function HandleClick(note) {
+        setViewNote(note);
+    }
+
+    function handleClose() {
+        setViewNote();
+    }
+
+    function handleSave(note) {
+        const newNotes = [...notes];
+
+        let i = 0;
+        for (i; i < notes.length; i++)
+            if(notes[i].id === note.id)
+                break;
+
+        newNotes[i] = note;
+        setNotes(newNotes);
+    }
+
     return (
-        <div className="noteContainer">
-            {notes.map(note => (
-                <Note key={note.id} note={note}/>
-            ))}
-        </div>
+        <>
+            <div className="noteContainer">
+                {notes.map(note => (
+                    <Note key={note.id} note={note} onClick={HandleClick} />
+                ))}
+            </div>
+            <Modal className="modalStyle" onClose={handleClose} open={viewNote}>
+                <NoteModal note={viewNote} onClose={handleClose} onSave={handleSave}/>
+            </Modal>
+        </>     
     );
 }
 
