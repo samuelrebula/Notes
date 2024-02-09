@@ -20,7 +20,13 @@ function Selecionados({ selecionados }) {
     return (
         <div>
             <h3>selecionados:</h3>
-            <p>{ingredientes.join(' ')}</p>
+            <ul>
+                {ingredientes.map((ingrediente, index) => {
+                    return (
+                        <li key={index}>{ingrediente}</li>
+                    )
+                })}
+            </ul>
             {showWarning && <h4>Número máximo de ingredientes atingido</h4>}
         </div>
     )
