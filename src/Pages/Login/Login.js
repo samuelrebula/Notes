@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import api from "../../services/api";
 import "./Login.css"
 
 function Login() {
@@ -8,12 +9,19 @@ function Login() {
     const [password, setPassword] = useState();
     const navigate = useNavigate();
 
-    function login() {
-        if(email === "teste@gmail.com" && password === "123"){
-            alert("Welcome\n" + email);
+    async function login(e) {
+        e.preventDefault();
+        try {
+            const response = await api.post('/login', {email, password});
+            alert("Welcome " + response.data.user.name);
             navigate('/home');
-        } else {
-            alert("Wrong email or password");
+        } catch (error) {
+            if(error.response.status === 403) {
+                alert("Wrong email or password");
+            } else {
+                alert(error.response.data.notification);
+            }
+            console.warn(error);
         }
     }
 
