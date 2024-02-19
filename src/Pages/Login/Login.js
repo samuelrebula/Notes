@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import { login } from "../../services/auth"; 
 import "./Login.css"
 
 function Login() {
@@ -9,11 +10,12 @@ function Login() {
     const [password, setPassword] = useState();
     const navigate = useNavigate();
 
-    async function login(e) {
+    async function handleLogin(e) {
         e.preventDefault();
         try {
             const response = await api.post('/login', {email, password});
             alert("Welcome " + response.data.user.name);
+            login(response.data.accessToken);
             navigate('/home');
         } catch (error) {
             if(error.response.status === 403) {
@@ -47,7 +49,7 @@ function Login() {
                                 onChange={(e) => {setPassword(e.target.value)}}
                             />
                         </Form.Group>
-                        <Button variant="primary" onClick={login}>Login</Button>
+                        <Button variant="primary" onClick={handleLogin}>Login</Button>
                     </Form>
                 </div>
             </div> 
